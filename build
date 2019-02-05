@@ -1,0 +1,1 @@
+docker build -f ./Dockerfile-eclipse-cdt -t zmart/eclipse-cdt .

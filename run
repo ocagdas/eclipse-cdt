@@ -1,0 +1,23 @@
+#!/bin/bash
+if [ -z ${HOST_VOL} ]; then
+   HOST_VOL=${HOME}
+fi
+
+if [ -z ${ECLIPSE_SETTINGS_DIR} ]; then
+   ECLIPSE_SETTINGS_DIR=${HOST_VOL}/eclipse_home
+fi
+
+if [[ ! -e $ECLIPSE_SETTINGS_DIR ]]; then
+    mkdir $ECLIPSE_SETTINGS_DIR
+elif [[ ! -d $ECLIPSE_SETTINGS_DIR ]]; then
+    echo "$dir already exists but is not a directory" 1>&2
+fi
+
+docker run -ti --rm \
+	--cap-add=SYS_PTRACE \
+	-e DISPLAY=$DISPLAY \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+	-v ${ECLIPSE_SETTINGS_DIR}:/home/developer \
+	-v ${HOST_VOL}:/export \
+	-e USER=$USER -e USERID=$UID \
+	zmart/eclipse-cdt
